@@ -1,7 +1,6 @@
-
 const files = { // an object of images that we will need
     img1: {
-        url: "logo-he2b-black.png"
+        url: "resources/logo-he2b-black.png"
         // this will be populated with another "data" property, containing the actual image (downloaded from above url)
     }
 };
