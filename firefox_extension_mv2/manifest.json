@@ -7,7 +7,7 @@
     "webRequest",
     "webRequestBlocking",
     "http://*.intranet.he2b.be/",
-    "http://youngfrog.lavnir.be/"
+    "http://youngfrog.lavnir.be/generateur-attestations/"
   ],
   "background": {
     "scripts": [
