@@ -1,0 +1,17 @@
+{
+  "manifest_version": 2,
+  "name": "CORS Relaxer",
+  "version": "1.0",
+  "description": "Disables CORS for requests to gesetu",
+  "permissions": [
+    "webRequest",
+    "webRequestBlocking",
+    "http://*.intranet.he2b.be/",
+    "http://youngfrog.lavnir.be/"
+  ],
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
+  }
+}

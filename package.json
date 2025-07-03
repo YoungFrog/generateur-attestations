@@ -1,0 +1,27 @@
+{
+  "name": "generer-attestions",
+  "version": "1.0.0",
+  "description": "J'utilise [pdfkit](https://pdfkit.org) ([doc](https://pdfkit.org/docs/guide.pdf))",
+  "main": "main.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "vite build && cp -r lib resources -t dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@git.esi-bru.be:nrichard/generateur-attestations"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "json-rpc-2.0": "^1.7.0"
+  },
+  "devDependencies": {
+    "vite": "^7.0.0"
+  }
+}

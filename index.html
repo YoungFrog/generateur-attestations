@@ -6,11 +6,22 @@
     <title>Document</title>
     <script src="lib/pdfkit.standalone.js"></script>
     <script src="lib/blob-stream.js"></script>
-    
   </head>
   <body>
-    <div>PDF Output <button onclick="download()">Download</button></div>
+    <form id="login-form">
+      Login: <input type="text" name="username" />
+
+      Password: <input type="password" name="password" />
+
+      <button>Login</button>
+    </form>
+
+    <form id="matr-form">
+    Matricule <input type="number" name="matricule" id="">
+    <button disabled>Show PDF</button>
+    </form>
+
     <iframe width="100%" height="1000px"></iframe>
-    <script src="main.js"></script>
+    <script src="main.js" type="module"></script>
   </body>
 </html>
