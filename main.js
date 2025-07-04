@@ -28,6 +28,8 @@ async function showStudentPdf(matricule) {
 
     const student = response.data.at(0);
 
+    console.dir(student)
+
     showPDF(getFullname(student),
         isFemale(student),
         getFullAddress(student),
@@ -49,7 +51,7 @@ function getBirthdate(student) {
 }
 
 function getFullAddress(student) {
-    return `${student.adr_rue}, ${student.adr_num} ${student.adr_bt ? `bte ${student.adr_bt}` : ""}\n${student.adr_cp} ${student.adr_loc}\n${student.paysadr_libcourt}`;
+    return `${student.adr_rue}${student.adr_num ? `, ${student.adr_num}` : ''}${student.adr_bt ? `bte ${student.adr_bt}` : ""}\n${student.adr_cp} ${student.adr_loc}\n${student.paysadr_libcourt}`;
 }
 
 function isFemale(student) {
