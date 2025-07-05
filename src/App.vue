@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
-import client, { initialize } from '../json_client'
-import { showPDF } from '../pdf'
+import client, { initialize } from './json_client'
+import { showPDF } from './pdf'
 
 const iframe = ref(null)
 
