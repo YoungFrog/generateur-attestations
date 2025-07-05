@@ -1,5 +1,5 @@
 <script setup>
-import { ref, useTemplateRef } from 'vue'
+import { onErrorCaptured, ref, useTemplateRef } from 'vue'
 import client from './json_client'
 import { showPDF } from './pdf'
 import TheLogin from './TheLogin.vue'
@@ -7,12 +7,15 @@ import TheLogin from './TheLogin.vue'
 const iframe = ref(null)
 const loginRef = useTemplateRef("login")
 const matricule = ref('')
-const error = ref('')
+const errors = ref([])
 
+
+onErrorCaptured(e => {
+    errors.value.push(e)
+    return false
+})
 
 function showStudentPdf() {
-    error.value = ''
-
     client.request('etudiant~vinscriptionext:findby', {
         conditions: {
             conditions: [
@@ -37,7 +40,7 @@ function showStudentPdf() {
             getBirthplace(student),
             getStudiesName(student)
         ))
-        .catch(e => error.value = e.toString())
+        .catch(e => errors.value.push(e))
 
 }
 
@@ -69,7 +72,13 @@ function getFullname(student) {
 
 <template>
 
-    <div class="error" v-if="error">{{ error }}</div>
+    
+
+    <div class="error" v-if="errors">
+        <div v-for="(e, i) in errors" >
+            {{ e }} <button @click="errors.splice(i, 1)">&times;</button>
+        </div>
+    </div>
 
     <TheLogin ref="login" />
 
