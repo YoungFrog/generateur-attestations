@@ -1,9 +1,6 @@
 const firstLine = "Le soussigné Frédéric SERVAIS, Directeur, certifie que :";
 const anac = "2025-2026"
 
-const iframe = document.querySelector('iframe')
-iframe.src = '' // remove pdf on hot reloading
-
 const required_files = {
     // an object of images that we will need
     // each value will be populated with another "data" property, containing the actual image (downloaded from above url)
@@ -29,7 +26,7 @@ async function downloadFile(file) {
         .then(r => r.arrayBuffer());
 }
 
-export async function showPDF(fullStudentName, genderIsFemale, fullAddress, dateNaissance, lieuNaissance, bachelier) {
+export async function showPDF(iframe, fullStudentName, genderIsFemale, fullAddress, dateNaissance, lieuNaissance, bachelier) {
 
     const doc = new PDFDocument({
         size: 'A4',
