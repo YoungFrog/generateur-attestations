@@ -9,6 +9,8 @@ export const initialize = async (username, password) => {
 
     const { key } = await client.request("gesetu~session:open", [username, password])
 
+    if (!key) return Promise.reject(new Error('No key was received. Invalid username/password ?'))
+
     headers["authorization"] = `Bearer ${key}`
 }
 

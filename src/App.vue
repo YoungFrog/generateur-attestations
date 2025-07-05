@@ -1,43 +1,44 @@
 <script setup>
-import { ref } from 'vue'
-import client, { initialize } from './json_client'
+import { ref, useTemplateRef } from 'vue'
+import client from './json_client'
 import { showPDF } from './pdf'
+import TheLogin from './TheLogin.vue'
 
 const iframe = ref(null)
+const loginRef = useTemplateRef("login")
+const matricule = ref('')
+const error = ref('')
 
-function submitCredentials(e) {
-    e.preventDefault()
-    const fd = new FormData(e.target)
-    e.target.querySelector('button').disabled = true
-    initialize(fd.get('username'), fd.get('password')).then(() => document.querySelector('#matr-form').querySelector('button').disabled = false)
-}
 
-function submitMatricule(e) {
-    showStudentPdf(new FormData(e.target).get('matricule'))
-}
+function showStudentPdf() {
+    error.value = ''
 
-async function showStudentPdf(matricule) {
-
-    const response = await client.request('etudiant~vinscriptionext:findby', {
+    client.request('etudiant~vinscriptionext:findby', {
         conditions: {
             conditions: [
-                { field: "etu_dossier", op: "=", val: matricule.toString() },
+                { field: "etu_dossier", op: "=", val: matricule.value.toString() },
                 { field: 'anac_annee', op: '=', val: '2024' }
             ]
         }
-
     })
+        .then(response => response.data)
+        .then(data => {
+            console.log("data", data)
+            if (!data?.length) return Promise.reject(new Error('No data received.'))
+            if (data.length > 1) return Promise.reject(new Error('More than one matching result'))
+            return data.at(0)
+        })
+        .then(student => showPDF(
+            iframe.value,
+            getFullname(student),
+            isFemale(student),
+            getFullAddress(student),
+            getBirthdate(student),
+            getBirthplace(student),
+            getStudiesName(student)
+        ))
+        .catch(e => error.value = e.toString())
 
-    const student = response.data.at(0);
-
-    console.dir(student)
-
-    showPDF(iframe.value, getFullname(student),
-        isFemale(student),
-        getFullAddress(student),
-        getBirthdate(student),
-        getBirthplace(student),
-        getStudiesName(student))
 }
 
 function getStudiesName(student) {
@@ -67,18 +68,20 @@ function getFullname(student) {
 </script>
 
 <template>
-    <form id="login-form" @submit="submitCredentials">
-        Login: <input type="text" name="username" />
 
-        Password: <input type="password" name="password" />
+    <div class="error" v-if="error">{{ error }}</div>
 
-        <button>Login</button>
-    </form>
+    <TheLogin ref="login" />
 
-    <form id="matr-form" @submit.prevent="submitMatricule">
-        Matricule <input type="number" name="matricule" id="">
-        <button disabled>Show PDF</button>
+    <form id="matr-form" @submit.prevent="showStudentPdf">
+        Matricule <input type="number" v-model="matricule">
+        <button :disabled="loginRef?.isLoading || !loginRef?.isLoggedIn">Show PDF</button>
     </form>
 
     <iframe width="100%" height="1000px" ref="iframe"></iframe>
 </template>
+<style>
+.error {
+    color: red;
+}
+</style>
